@@ -14,29 +14,18 @@ def index():
     if request.method == "POST":
         account_balance = float(request.form["account_balance"])
         spending_timeframe = int(request.form["spending_timeframe"])
-        budget_recommendation = generate_budget_recommendation(
+        budget_recommendation, recommended_allocation = generate_budget_recommendation(
             account_balance, spending_timeframe)
-        ai_budget_recommendation = generate_budget_recommendation(
-            account_balance, spending_timeframe)
-        # Generate graph data and layout settings based on AI recommendation
         categories = ["Food", "Housing", "Entertainment", "Savings"]
-        # Example allocation percentages
-        recommended_allocation = [30, 25, 15, 30]
 
         graph_data = {
             "data": [
                 {"x": categories, "y": recommended_allocation,
-                    "type": "bar", "name": "Budget Allocation"}
+                 "type": "bar", "name": "Budget Allocation"}
             ],
             "layout": {"title": "Recommended Budget Allocation"}
         }
-        graph_data = {
-            "data": [
-                {"x": categories, "y": recommended_allocation,
-                    "type": "bar", "name": "Budget Allocation"}
-            ],
-            "layout": {"title": "Recommended Budget Allocation"}
-        }
+
         graph = json.dumps(graph_data)
 
     return render_template("index.html", budget_recommendation=budget_recommendation, graph=graph)

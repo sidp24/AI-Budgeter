@@ -16,7 +16,8 @@ def index():
         spending_timeframe = int(request.form["spending_timeframe"])
         budget_recommendation = generate_budget_recommendation(
             account_balance, spending_timeframe)
-
+        ai_budget_recommendation = generate_budget_recommendation(
+            account_balance, spending_timeframe)
         # Generate graph data and layout settings based on AI recommendation
         categories = ["Food", "Housing", "Entertainment", "Savings"]
         # Example allocation percentages
@@ -29,7 +30,13 @@ def index():
             ],
             "layout": {"title": "Recommended Budget Allocation"}
         }
-
+        graph_data = {
+            "data": [
+                {"x": categories, "y": recommended_allocation,
+                    "type": "bar", "name": "Budget Allocation"}
+            ],
+            "layout": {"title": "Recommended Budget Allocation"}
+        }
         graph = json.dumps(graph_data)
 
     return render_template("index.html", budget_recommendation=budget_recommendation, graph=graph)
